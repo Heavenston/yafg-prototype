@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/factory_terrain.obj-a1ed467cd77065cabbb7b070201c32ff.mesh"
+
+[deps]
+
+files=[ "res://.import/factory_terrain.obj-a1ed467cd77065cabbb7b070201c32ff.mesh" ]
+
+source_file="res://resources/models/factory_terrain.obj"
+dest_files=[ "res://.import/factory_terrain.obj-a1ed467cd77065cabbb7b070201c32ff.mesh", "res://.import/factory_terrain.obj-a1ed467cd77065cabbb7b070201c32ff.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

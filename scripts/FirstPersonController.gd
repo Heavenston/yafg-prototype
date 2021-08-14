@@ -70,6 +70,23 @@ func _input(event):
 	if GameplayManager.get_current_controller() != self:
 		return
 	
+	if event is InputEventMouseMotion:
+		if is_in_interaction_mode:
+			_update_interaction_mode_raycast()
+		else:
+			rotate_y(-event.relative.x * mouse_sensitivity)
+			head.rotate_x(-event.relative.y * mouse_sensitivity)
+	
+	if event.is_action_pressed("fp_run"):
+		is_running = true
+	if event.is_action_released("fp_run"):
+		is_running = false
+	
+	if event.is_action_pressed("fp_next_hotbar_slot"):
+		$HUD.select_next_slot()
+	if event.is_action_pressed("fp_previous_hotbar_slot"):
+		$HUD.select_previous_slot()
+	
 	if event.is_action_pressed("fp_interaction_mode"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 		if ProjectSettings.get("global/restore_mouse_pos_interaction_mode") and\
@@ -87,11 +104,6 @@ func _input(event):
 		is_in_interaction_mode = false
 		interact_raycast.enabled = false
 	
-	if event.is_action_pressed("fp_run"):
-		is_running = true
-	if event.is_action_released("fp_run"):
-		is_running = false
-	
 	if is_in_interaction_mode \
 	and is_instance_valid(interact_hover) \
 	and event.is_action_pressed("fp_interaction_mode_use_primary"):
@@ -103,13 +115,6 @@ func _input(event):
 		var result = SessionManager.give_item(interact_hover.get_node("components/item").item_id)
 		if result:
 			interact_hover.queue_free()
-	
-	if event is InputEventMouseMotion:
-		if is_in_interaction_mode:
-			_update_interaction_mode_raycast()
-		else:
-			rotate_y(-event.relative.x * mouse_sensitivity)
-			head.rotate_x(-event.relative.y * mouse_sensitivity)
 
 func _reset_interaction_hover():
 	if not is_instance_valid(interact_hover):

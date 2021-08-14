@@ -1,11 +1,10 @@
 extends Resource
 class_name ItemInfo
 
-export(String) var name: String
-export(Texture) var texture: Texture
-export(PackedScene) var place_scene: PackedScene
+export(String) var id: String = ""
+export(String) var name: String = ""
+export(String, MULTILINE) var description: String = ""
 
-func _init(p_name = "", p_texture = null, p_place_scene = null):
-	name = p_name
-	texture = p_texture
-	place_scene = p_place_scene
+export(Texture) var texture: Texture = null
+export(PackedScene) var place_scene: PackedScene = null
+export(Vector3) var photo_scale: Vector3 = Vector3.ONE

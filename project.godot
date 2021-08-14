@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Spatial",
+"class": "Component",
+"language": "GDScript",
+"path": "res://components/component.gd"
+}, {
 "base": "KinematicBody",
 "class": "FpsController",
 "language": "GDScript",
@@ -20,6 +25,7 @@ _global_script_classes=[ {
 "path": "res://resources/data/items_info/item_info.gd"
 } ]
 _global_script_class_icons={
+"Component": "",
 "FpsController": "",
 "ItemInfo": ""
 }
@@ -34,10 +40,13 @@ config/icon="res://icon.png"
 
 CameraManager="*res://singletones/camera_manager.gd"
 GameplayManager="*res://singletones/gameplay_manager.gd"
+ItemManager="*res://singletones/item_manager.gd"
+SessionManager="*res://singletones/session_manager.gd"
 
 [global]
 
 mouse_sensitivity=0.005
+restore_mouse_pos_interaction_mode=true
 
 [input]
 

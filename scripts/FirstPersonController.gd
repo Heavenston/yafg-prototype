@@ -18,13 +18,17 @@ export(float) var interaction_reach     = 5.0
 
 onready var head = $Head
 onready var camera = $Head/Camera
-onready var interact_raycast: RayCast = $InteractRaycast
+onready var interact_raycast := $InteractRaycast
 
 var velocity: Vector3 = Vector3(0.0, 0.0, 0.0)
 var is_running: bool = false
 var last_mouse_pos = null
 var is_in_interaction_mode = false
 var interact_hover = null
+
+var placement_item_id: String = ""
+var placement_object: Spatial = null
+var placement_ghost: Area = null
 
 func _ready():
 	interact_raycast.add_exception(self)
@@ -61,10 +65,18 @@ func _get_input_vector() -> Vector2:
 	
 	return vec
 
-func _update_interaction_mode_raycast():
-	var cast_to = camera.project_position(get_viewport().get_mouse_position(), interaction_reach)
+func _update_interaction_mode_raycast(mouse_pos: Vector2 = get_viewport().get_mouse_position()):
+	var cast_to = camera.project_position(mouse_pos, interaction_reach)
 	cast_to = interact_raycast.global_transform.inverse() * cast_to
 	interact_raycast.cast_to = cast_to
+
+func _validate_placement():
+	get_tree().current_scene.add_child(placement_object)
+	placement_object.global_transform = placement_ghost.global_transform
+	placement_object = null
+	_reset_object_placement()
+	
+	SessionManager.remove_item($HUD.selected_slot)
 
 func _input(event):
 	if GameplayManager.get_current_controller() != self:
@@ -96,7 +108,10 @@ func _input(event):
 		is_in_interaction_mode = true
 		interact_raycast.enabled = true
 		
-		_update_interaction_mode_raycast()
+		if last_mouse_pos != null:
+			_update_interaction_mode_raycast(last_mouse_pos)
+		else:
+			_update_interaction_mode_raycast()
 	
 	if event.is_action_released("fp_interaction_mode"):
 		last_mouse_pos = get_viewport().get_mouse_position()
@@ -105,16 +120,22 @@ func _input(event):
 		interact_raycast.enabled = false
 	
 	if is_in_interaction_mode \
-	and is_instance_valid(interact_hover) \
 	and event.is_action_pressed("fp_interaction_mode_use_primary"):
+		
+		if is_instance_valid(placement_object) \
+		and is_instance_valid(placement_ghost) \
+		and placement_ghost.is_valid:
+			_validate_placement()
+		
 		pass
 	if is_in_interaction_mode \
-	and is_instance_valid(interact_hover) \
-	and event.is_action_pressed("fp_interaction_mode_use_secondary") \
-	and interact_hover.has_node("components/pickupable"):
-		var result = SessionManager.give_item(interact_hover.get_node("components/item").item_id)
-		if result:
-			interact_hover.queue_free()
+	and event.is_action_pressed("fp_interaction_mode_use_secondary"):
+		
+		if is_instance_valid(interact_hover) \
+		and interact_hover.has_node("components/pickupable"):
+			var result = SessionManager.give_item(interact_hover.get_node("components/item").item_id)
+			if result:
+				interact_hover.queue_free()
 
 func _reset_interaction_hover():
 	if not is_instance_valid(interact_hover):
@@ -125,12 +146,41 @@ func _reset_interaction_hover():
 	
 	interact_hover = null
 
+func _reset_object_placement():
+	if is_instance_valid(placement_object):
+		placement_object.queue_free()
+	if is_instance_valid(placement_ghost):
+		placement_ghost.queue_free()
+	placement_item_id = ""
+
 func _physics_process(delta):
 	velocity.y -= gravity * delta
 	velocity.y = move_and_slide(velocity, Vector3.UP, true, 4, deg2rad(70), false).y
 	
-	if not is_in_interaction_mode or not interact_raycast.is_colliding():
+	if not is_in_interaction_mode:
 		_reset_interaction_hover()
+		_reset_object_placement()
+		return
+	
+	if $HUD.get_selected_item() != "":
+		interact_raycast.collision_mask = 0b10
+		_reset_interaction_hover()
+		
+		if $HUD.get_selected_item() != placement_item_id:
+			_reset_object_placement()
+			placement_item_id = $HUD.get_selected_item()
+			placement_object = ItemManager.get_item(placement_item_id).place_scene.instance()
+			placement_ghost = placement_object.get_node("components/placement_ghost").create()
+			get_tree().get_root().add_child(placement_ghost)
+		
+		return
+	else:
+		interact_raycast.collision_mask = 0b01
+		_reset_object_placement()
+	
+	if not interact_raycast.is_colliding():
+		_reset_interaction_hover()
+		_reset_object_placement()
 		return
 	
 	var collider: CollisionObject = interact_raycast.get_collider()
@@ -167,6 +217,14 @@ func _process(delta):
 	
 	if Input.is_action_pressed("fp_jump") and is_on_floor():
 		velocity.y = jump_speed
+	
+	if is_instance_valid(placement_ghost):
+		var new_pos = interact_raycast.global_transform * interact_raycast.cast_to
+		if interact_raycast.is_colliding():
+			new_pos = interact_raycast.get_collision_point()
+		if placement_object.has_node("floor"):
+			new_pos -= (placement_object.get_node("floor") as Spatial).transform.origin
+		placement_ghost.global_transform.origin = new_pos
 
 
 

@@ -16,3 +16,8 @@ func give_item(item_id: String) -> bool:
 	emit_signal("inventory_change", [player_inventory.size() - 1])
 	print("Added an item to the player inventory")
 	return true
+
+func remove_item(slot: int):
+	player_inventory.remove(slot)
+	
+	emit_signal("inventory_change", range(0, player_inventory_size))

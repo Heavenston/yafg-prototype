@@ -8,6 +8,12 @@ func _get_slot(id: int) -> Control:
 	assert(is_instance_valid(slot))
 	return slot
 
+func get_selected_item() -> String:
+	if SessionManager.player_inventory.size() <= selected_slot:
+		return ""
+	var item_id = SessionManager.player_inventory[selected_slot]
+	return item_id as String
+
 func set_selected_slot(value: int):
 	_get_slot(selected_slot).is_selected = false
 	_get_slot(value).is_selected = true

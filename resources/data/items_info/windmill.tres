@@ -1,0 +1,12 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://resources/data/items_info/item_info.gd" type="Script" id=1]
+[ext_resource path="res://DEBUG/windmill.tscn" type="PackedScene" id=2]
+
+[resource]
+script = ExtResource( 1 )
+id = "windmill"
+name = "Windmill"
+description = "A windmill"
+place_scene = ExtResource( 2 )
+photo_scale = Vector3( 0.2, 0.2, 0.2 )

@@ -7,8 +7,12 @@ var item_id: String = "" setget set_item
 
 func _ready():
 	SessionManager.connect("inventory_change", self, "_on_inventory_change")
-	
 	set_is_selected(is_selected)
+	
+	if SessionManager.player_inventory.size() <= inventory_slot:
+		set_item("")
+	else:
+		set_item(SessionManager.player_inventory[inventory_slot])
 
 func set_item(id: String):
 	item_id = id

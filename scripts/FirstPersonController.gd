@@ -99,6 +99,10 @@ func _input(event):
 	if event.is_action_pressed("fp_previous_hotbar_slot"):
 		$HUD.select_previous_slot()
 	
+	for i in range(0, SessionManager.player_inventory_size):
+		if event.is_action_pressed("fp_selector_hotbar_"+String(i)):
+			$HUD.set_selected_slot(i)
+	
 	if event.is_action_pressed("fp_interaction_mode"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 		if ProjectSettings.get("global/restore_mouse_pos_interaction_mode") and\
@@ -152,6 +156,8 @@ func _reset_object_placement():
 	if is_instance_valid(placement_ghost):
 		placement_ghost.queue_free()
 	placement_item_id = ""
+	placement_ghost = null
+	placement_object = null
 
 func _physics_process(delta):
 	velocity.y -= gravity * delta
@@ -222,8 +228,8 @@ func _process(delta):
 		var new_pos = interact_raycast.global_transform * interact_raycast.cast_to
 		if interact_raycast.is_colliding():
 			new_pos = interact_raycast.get_collision_point()
-		if placement_object.has_node("floor"):
-			new_pos -= (placement_object.get_node("floor") as Spatial).transform.origin
+		if placement_object.has_node("joints/floor"):
+			new_pos -= (placement_object.get_node("joints/floor") as Spatial).transform.origin
 		placement_ghost.global_transform.origin = new_pos
 
 

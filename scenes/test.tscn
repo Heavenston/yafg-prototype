@@ -10,7 +10,7 @@ extents = Vector3( 100, 0.5, 100 )
 
 [sub_resource type="SpatialMaterial" id=2]
 albedo_texture = ExtResource( 1 )
-uv1_scale = Vector3( 500, 500, 500 )
+uv1_triplanar = true
 
 [sub_resource type="QuadMesh" id=3]
 material = SubResource( 2 )

@@ -16,7 +16,7 @@ func _set_color(color: Color):
 	material.albedo_color = color
 	material.albedo_color.a = 0.5
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	var overlapping_bodies = get_overlapping_bodies()
 	var colliding = false
 	var colliding_ground = false

@@ -4,18 +4,20 @@ var _items_cache: Dictionary = {}
 var _items_textures_cache: Dictionary = {}
 
 func _ready():
-	var files := []
+	var err
 	
 	var dir := Directory.new()
-	dir.open("res://resources/data/items_info")
-	dir.list_dir_begin()
+	err = dir.open("res://resources/data/items_info")
+	assert(not err)
+	err = dir.list_dir_begin()
+	assert(not err)
 	
 	while true:
 		var file := dir.get_next()
 		if file == "":
 			break
 		if file.ends_with(".tres"):
-			get_item(file.trim_suffix(".tres"))
+			var _item = get_item(file.trim_suffix(".tres"))
 	
 	print("Finished loading items, ", _items_cache.size(), " items loaded")
 

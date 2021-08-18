@@ -29,6 +29,8 @@ var interact_hover = null
 var placement_item_id: String = ""
 var placement_object: Spatial = null
 var placement_ghost: Area = null
+var placement_joint1 = null
+var placement_joint2 = null
 
 func _ready():
 	interact_raycast.add_exception(self)
@@ -75,6 +77,7 @@ func _validate_placement():
 	placement_object.global_transform = placement_ghost.global_transform
 	placement_object = null
 	_reset_object_placement()
+	JointManager.connect_joints(placement_joint1, placement_joint2)
 	
 	SessionManager.remove_item($HUD.selected_slot)
 
@@ -131,7 +134,6 @@ func _input(event):
 		and placement_ghost.is_valid:
 			_validate_placement()
 		
-		pass
 	if is_in_interaction_mode \
 	and event.is_action_pressed("fp_interaction_mode_use_secondary"):
 		
@@ -213,6 +215,8 @@ func _physics_process(delta):
 
 				if closest_joint != null and is_instance_valid(closest_joint):
 					placement_ghost.is_valid = true
+					placement_joint1 = closest_joint
+					placement_joint2 = closest_own_joint
 
 					if closest_joint.global_placement:
 						new_pos = col_point

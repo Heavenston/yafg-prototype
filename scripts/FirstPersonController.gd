@@ -169,7 +169,6 @@ func _physics_process(delta):
 		return
 	
 	if $HUD.get_selected_item() != "":
-		interact_raycast.collision_mask = 0b10
 		_reset_interaction_hover()
 		
 		if $HUD.get_selected_item() != placement_item_id:
@@ -177,7 +176,57 @@ func _physics_process(delta):
 			placement_item_id = $HUD.get_selected_item()
 			placement_object = ItemManager.get_item(placement_item_id).place_scene.instance()
 			placement_ghost = placement_object.get_node("components/placement_ghost").create()
+			interact_raycast.add_exception(placement_ghost)
 			get_tree().get_root().add_child(placement_ghost)
+
+		# Placement ghost positioning
+		if is_instance_valid(placement_ghost):
+			var new_pos = interact_raycast.global_transform * interact_raycast.cast_to
+			if interact_raycast.is_colliding():
+				var col_point = interact_raycast.get_collision_point()
+				var collider = interact_raycast.get_collider()
+				
+				# Find closest matching joint with collider
+				var closest_joint = null
+				var closest_own_joint = null
+				var closest_distance = 99999999
+				if collider.has_node("joints"):
+					for joint in collider.get_node("joints").get_children():
+						# If the object we're trying to place doesn't have the joint, skip it
+						if not placement_object.has_node("joints/"+joint.name):
+							continue
+						var joint2 = placement_object.get_node("joints/"+joint.name)
+						# Check joints gender compatibility
+						var g1 = joint.gender
+						var g2 = joint2.gender
+						if g1 ^ g2 == 0:
+							continue
+						var dist: float
+						if joint.global_placement:
+							dist = 0
+						else:
+							dist = joint.global_transform.origin.distance_squared_to(col_point)
+						if dist < closest_distance:
+							closest_joint = joint
+							closest_own_joint = joint2
+							closest_distance = dist
+
+				if closest_joint != null and is_instance_valid(closest_joint):
+					placement_ghost.is_valid = true
+
+					if closest_joint.global_placement:
+						new_pos = col_point
+					else:
+						new_pos = closest_joint.global_transform.origin
+					new_pos -= closest_own_joint.transform.origin
+
+				else:
+					placement_ghost.is_valid = false
+					new_pos = col_point
+			else:
+				placement_ghost.is_valid = false
+
+			placement_ghost.global_transform.origin = new_pos
 		
 		return
 	else:
@@ -224,13 +273,6 @@ func _process(delta):
 	if Input.is_action_pressed("fp_jump") and is_on_floor():
 		velocity.y = jump_speed
 	
-	if is_instance_valid(placement_ghost):
-		var new_pos = interact_raycast.global_transform * interact_raycast.cast_to
-		if interact_raycast.is_colliding():
-			new_pos = interact_raycast.get_collision_point()
-		if placement_object.has_node("joints/floor"):
-			new_pos -= (placement_object.get_node("joints/floor") as Spatial).transform.origin
-		placement_ghost.global_transform.origin = new_pos
 
 
 

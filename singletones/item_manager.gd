@@ -48,6 +48,7 @@ func get_item(id: String) -> ItemInfo:
 		return _items_cache.get(id)
 	var item: ItemInfo = load("res://resources/data/items_info/"+id+".tres")
 	if item == null:
+		printerr("Could not load item "+id)
 		return null
 	_items_cache[id] = item
 	return item

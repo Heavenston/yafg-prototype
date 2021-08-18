@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://resources/models/Mini-RPG-Bundle Part2/FBX/Material_018.material" type="Material" id=1]
 [ext_resource path="res://components/mesh_recolor.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://components/placement_ghost.tscn" type="PackedScene" id=4]
 [ext_resource path="res://components/pickupable.tscn" type="PackedScene" id=5]
 [ext_resource path="res://subscenes/joints/floor.tscn" type="PackedScene" id=6]
+[ext_resource path="res://subscenes/joints/crate_joint.tscn" type="PackedScene" id=7]
 
 [sub_resource type="ArrayMesh" id=1]
 blend_shape_mode = 0
@@ -47,6 +48,13 @@ _collisions_paths = [ NodePath("../../CollisionShape") ]
 
 [node name="floor" parent="joints" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.525, 0 )
+
+[node name="crate_joint" parent="joints" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.51921, 0 )
+
+[node name="crate_joint2" parent="joints" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.525, 0 )
+gender = 2
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 300, 0, 0, 0, -1.31134e-05, 300, 0, -300, -1.31134e-05, 0, -0.520618, 0 )

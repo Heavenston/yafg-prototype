@@ -46,7 +46,7 @@ material/0 = null
 
 [node name="joints" type="Spatial" parent="StaticBody"]
 
-[node name="yjoint" parent="StaticBody/joints" instance=ExtResource( 4 )]
+[node name="floor" parent="StaticBody/joints" instance=ExtResource( 4 )]
 joint_id = "floor"
 allowed_connection_ids = [ "object_floor" ]
 global_placement = true

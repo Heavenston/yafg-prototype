@@ -48,7 +48,6 @@ CameraManager="*res://singletones/camera_manager.gd"
 GameplayManager="*res://singletones/gameplay_manager.gd"
 ItemManager="*res://singletones/item_manager.gd"
 SessionManager="*res://singletones/session_manager.gd"
-JointManager="*res://singletones/joint_manager.gd"
 
 [global]
 

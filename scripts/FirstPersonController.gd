@@ -78,7 +78,8 @@ func _validate_placement():
 	placement_object.global_transform = placement_ghost.global_transform
 	placement_object = null
 	_reset_object_placement()
-	JointManager.connect_joints(placement_joint1, placement_joint2)
+	placement_joint1.connect_to(placement_joint2)
+	placement_joint2.connect_to(placement_joint1)
 	
 	SessionManager.remove_item($HUD.selected_slot)
 
@@ -208,6 +209,8 @@ func _physics_process(delta):
 						# File a valid joint
 						var joint2 = null
 						for joint2_ in placement_object_joints[joint.joint_id]:
+							if joint.connected_to != null or (not joint.global_placement and joint2_.connected_to != null):
+								continue
 							# Check joints gender compatibility
 							var g1 = joint.gender
 							var g2 = joint2_.gender

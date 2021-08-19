@@ -1,15 +1,14 @@
 extends Spatial
 
-export(int, FLAGS, "Male", "Female") var gender: int = 0b01
-
 var connected_to = null
 
-var joint_id: String
-var global_placement: bool
+export var joint_id: String
+export(Array, String) var allowed_connection_ids: Array
+export var global_placement: bool
 
-func _init(p_joint_id: String, p_global_placement: bool = false):
-	joint_id = p_joint_id
-	global_placement = p_global_placement
+func can_connect_to(to) -> bool:
+	return not is_instance_valid(connected_to) and not is_instance_valid(to.connected_to) and \
+			allowed_connection_ids.has(to.joint_id) and to.allowed_connection_ids.has(joint_id)
 
 func connect_to(to):
 	if to.connected_to != null or connected_to != null:

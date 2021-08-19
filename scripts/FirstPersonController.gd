@@ -28,7 +28,7 @@ var interact_hover = null
 
 var placement_item_id: String = ""
 var placement_object: Spatial = null
-var placement_object_joints: Dictionary = {}
+var placement_object_joints: Array = []
 var placement_ghost: Area = null
 var placement_joint1 = null
 var placement_joint2 = null
@@ -179,13 +179,8 @@ func _physics_process(delta):
 			_reset_object_placement()
 			placement_item_id = $HUD.get_selected_item()
 			placement_object = ItemManager.get_item(placement_item_id).place_scene.instance()
-			placement_object_joints = {}
-			if placement_object.has_node("joints"):
-				for joint in placement_object.get_node("joints").get_children():
-					if placement_object_joints.has(joint.joint_id):
-						placement_object_joints[joint.joint_id].push_back(joint)
-					else:
-						placement_object_joints[joint.joint_id] = [joint]
+			placement_object_joints = placement_object.get_node("joints").get_children()
+
 			placement_ghost = placement_object.get_node("components/placement_ghost").create()
 			interact_raycast.add_exception(placement_ghost)
 			get_tree().get_root().add_child(placement_ghost)
@@ -203,23 +198,16 @@ func _physics_process(delta):
 				var closest_distance = 99999999
 				if collider.has_node("joints"):
 					for joint in collider.get_node("joints").get_children():
-						# If the object we're trying to place doesn't have the joint, skip it
-						if not placement_object_joints.has(joint.joint_id):
-							continue
-						# File a valid joint
+						# Find a valid joint
 						var joint2 = null
-						for joint2_ in placement_object_joints[joint.joint_id]:
-							if joint.connected_to != null or (not joint.global_placement and joint2_.connected_to != null):
-								continue
-							# Check joints gender compatibility
-							var g1 = joint.gender
-							var g2 = joint2_.gender
-							if g1 ^ g2 == 0:
+						for joint2_ in placement_object_joints:
+							if not joint.can_connect_to(joint2_):
 								continue
 							joint2 = joint2_
 							break
 						if joint2 == null:
 							continue
+
 						var dist: float
 						if joint.global_placement:
 							dist = 0

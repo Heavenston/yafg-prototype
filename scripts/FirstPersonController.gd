@@ -23,8 +23,11 @@ onready var interact_raycast := $InteractRaycast
 var velocity: Vector3 = Vector3(0.0, 0.0, 0.0)
 var is_running: bool = false
 var last_mouse_pos = null
+
 var is_in_interaction_mode = false
 var interact_hover = null
+var interact_hover_recolors: Array = []
+var interact_hover_can_pickup: bool = false
 
 var placement_item_id: String = ""
 var placement_object: Spatial = null
@@ -79,7 +82,6 @@ func _validate_placement():
 	placement_object = null
 	_reset_object_placement()
 	placement_joint1.connect_to(placement_joint2)
-	placement_joint2.connect_to(placement_joint1)
 	
 	SessionManager.remove_item($HUD.selected_slot)
 
@@ -140,19 +142,20 @@ func _input(event):
 	and event.is_action_pressed("fp_interaction_mode_use_secondary"):
 		
 		if is_instance_valid(interact_hover) \
+		and interact_hover_can_pickup \
 		and interact_hover.has_node("components/pickupable"):
 			var result = SessionManager.give_item(interact_hover.get_node("components/item").item_id)
 			if result:
 				interact_hover.queue_free()
 
 func _reset_interaction_hover():
-	if not is_instance_valid(interact_hover):
-		return
 	
-	if interact_hover.has_node("components/mesh_recolor"):
-		interact_hover.get_node("components/mesh_recolor").reset()
+	for r in interact_hover_recolors:
+		if is_instance_valid(r):
+			r.reset()
 	
 	interact_hover = null
+	interact_hover_recolors = []
 
 func _reset_object_placement():
 	if is_instance_valid(placement_object):
@@ -253,10 +256,33 @@ func _physics_process(delta):
 	_reset_interaction_hover()
 	
 	if collider.has_node("components/pickupable"):
-		var recolor = collider.get_node("components/mesh_recolor")
-		if is_instance_valid(recolor):
+		var invalid_joints := []
+		var can_pickup := true
+		if collider.has_node("joints"):
+			var body_cache = {}
+			var ignore_list = [collider]
+			for joint in collider.get_node("joints").get_children():
+				if joint.joint_id != "object_floor" and is_instance_valid(joint.connected_to):
+					var p = joint.connected_to.get_node("../..")
+					if not JointUtils.is_body_grounded(p, ignore_list, body_cache):
+						invalid_joints.append(p)
+						can_pickup = false
+
+		interact_hover_can_pickup = can_pickup
+
+		if collider.has_node("components/mesh_recolor"):
+			var recolor = collider.get_node("components/mesh_recolor")
+			interact_hover_recolors.append(recolor)
 			recolor.set_color(Color.white)
-	
+		if not can_pickup:
+			for body in invalid_joints:
+				if body.has_node("components/mesh_recolor"):
+					var recolor = body.get_node("components/mesh_recolor")
+					interact_hover_recolors.append(recolor)
+					recolor.set_color(Color.red)
+	else:
+		interact_hover_can_pickup = false
+
 	interact_hover = collider
 
 func _process(delta):

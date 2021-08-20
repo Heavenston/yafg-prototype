@@ -12,8 +12,8 @@ func can_connect_to(to) -> bool:
 			allowed_connection_ids.has(to.joint_id) and to.allowed_connection_ids.has(joint_id)
 
 func connect_to(to):
-	if (to.connected_to != null and not to.global_placement) or\
-		(connected_to != null and not global_placement):
+	if (is_instance_valid(to.connected_to) and not to.global_placement) or\
+		(is_instance_valid(connected_to) and not global_placement):
 		return
 
 	connected_to = to

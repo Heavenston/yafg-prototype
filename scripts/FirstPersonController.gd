@@ -168,7 +168,7 @@ func _reset_object_placement():
 
 func _physics_process(delta):
 	velocity.y -= gravity * delta
-	velocity.y = move_and_slide(velocity, Vector3.UP, true, 4, deg2rad(70), false).y
+	velocity = move_and_slide(velocity, Vector3.UP, true, 4, deg2rad(70), false)
 	
 	if not is_in_interaction_mode:
 		_reset_interaction_hover()

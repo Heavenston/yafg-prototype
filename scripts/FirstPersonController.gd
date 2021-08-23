@@ -35,6 +35,7 @@ var placement_object_joints: Array = []
 var placement_ghost: Area = null
 var placement_joint1 = null
 var placement_joint2 = null
+var placement_rotation = 0
 
 func _ready():
 	interact_raycast.add_exception(self)
@@ -165,6 +166,7 @@ func _reset_object_placement():
 	placement_item_id = ""
 	placement_ghost = null
 	placement_object = null
+	placement_rotation = 0
 
 func _physics_process(delta):
 	velocity.y -= gravity * delta
@@ -187,6 +189,11 @@ func _physics_process(delta):
 			placement_ghost = placement_object.get_node("components/placement_ghost").create()
 			interact_raycast.add_exception(placement_ghost)
 			get_tree().get_root().add_child(placement_ghost)
+
+		if Input.is_action_pressed("fp_rotate_clockwise"):
+			placement_rotation -= 1.5 * delta
+		if Input.is_action_pressed("fp_rotate_counter_clockwise"):
+			placement_rotation += 1.5 * delta
 
 		# Placement ghost positioning
 		if is_instance_valid(placement_ghost):
@@ -241,6 +248,9 @@ func _physics_process(delta):
 						target_view = -closest_joint.global_transform.basis.xform(Vector3.FORWARD)
 						target_up = closest_joint.global_transform.basis.xform(Vector3.UP)
 						final_position = closest_joint.global_transform.origin
+
+					if closest_joint.allow_placement_rotations:
+						target_up = target_up.rotated(target_view, placement_rotation)
 
 					var joint_transform = closest_own_joint.transform
 

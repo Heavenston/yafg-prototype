@@ -5,6 +5,7 @@ var connected_to = null
 export var joint_id: String
 export(Array, String) var allowed_connection_ids: Array
 export var global_placement: bool = false
+export var allow_placement_rotations: bool = false
 
 func can_connect_to(to) -> bool:
 	return (not is_instance_valid(connected_to) or global_placement) and\

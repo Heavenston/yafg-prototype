@@ -12,7 +12,7 @@ export(float) var runnning_speed: float = 7
 export(float) var walking_acc: float    = 10.0
 export(float) var air_acc: float        = 1.0
 export(float) var mouse_sensitivity: float = ProjectSettings.get_setting("global/mouse_sensitivity")
-export(float) var jump_height: float    = 0.7112
+export(float) var jump_height: float    = 1
 onready var jump_speed: float           = sqrt(2 * gravity * jump_height)
 export(float) var interaction_reach     = 5.0
 

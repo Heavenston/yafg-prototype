@@ -49,6 +49,7 @@ GameplayManager="*res://singletones/gameplay_manager.gd"
 ItemManager="*res://singletones/item_manager.gd"
 SessionManager="*res://singletones/session_manager.gd"
 JointUtils="*res://singletones/joint_utils.gd"
+DebugDraw="*res://addons/zylann.debug_draw/debug_draw.gd"
 
 [global]
 

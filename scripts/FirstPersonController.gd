@@ -190,9 +190,11 @@ func _physics_process(delta):
 
 		# Placement ghost positioning
 		if is_instance_valid(placement_ghost):
-			var new_pos = interact_raycast.global_transform * interact_raycast.cast_to
+			var new_transform := Transform()
+			new_transform.origin = interact_raycast.global_transform * interact_raycast.cast_to
 			if interact_raycast.is_colliding():
 				var col_point = interact_raycast.get_collision_point()
+				var col_normal = interact_raycast.get_collision_normal()
 				var collider = interact_raycast.get_collider()
 				
 				# Find closest matching joint with collider
@@ -221,24 +223,37 @@ func _physics_process(delta):
 							closest_own_joint = joint2
 							closest_distance = dist
 
+				# If a valid joint is found show placement ghost
+				# And do matrix magic to put the joint in the correct positions
 				if closest_joint != null and is_instance_valid(closest_joint):
 					placement_ghost.is_valid = true
 					placement_joint1 = closest_joint
 					placement_joint2 = closest_own_joint
 
+					var target_view := Vector3.FORWARD
+					var target_up := Vector3.UP
+					var final_position := Vector3.ZERO
 					if closest_joint.global_placement:
-						new_pos = col_point
+						target_view = col_normal
+						target_up = Vector3(1, 0, 0)
+						final_position = col_point
 					else:
-						new_pos = closest_joint.global_transform.origin
-					new_pos -= closest_own_joint.transform.origin
+						target_view = -closest_joint.global_transform.basis.xform(Vector3.FORWARD)
+						target_up = closest_joint.global_transform.basis.xform(Vector3.UP)
+						final_position = closest_joint.global_transform.origin
 
+					var joint_transform = closest_own_joint.transform
+
+					new_transform = Transform.IDENTITY.looking_at(target_view, target_up)
+					new_transform *= joint_transform.inverse()
+					new_transform.origin += final_position
 				else:
 					placement_ghost.is_valid = false
-					new_pos = col_point
+					new_transform = Transform.translated(col_point)
 			else:
 				placement_ghost.is_valid = false
 
-			placement_ghost.global_transform.origin = new_pos
+			placement_ghost.global_transform = new_transform
 		
 		return
 	else:

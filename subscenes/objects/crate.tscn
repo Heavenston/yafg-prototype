@@ -49,18 +49,19 @@ _collisions_paths = [ NodePath("../../CollisionShape") ]
 [node name="joints" type="Spatial" parent="."]
 
 [node name="object_floor" parent="joints" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.525, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.525, 0 )
 
 [node name="generic_joint_male" parent="joints" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.525, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.525, 0 )
 
 [node name="crate_joint_yp" parent="joints" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.525, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.525, 0 )
 joint_id = "crate_joint_yp"
 allowed_connection_ids = [ "crate_joint_yn" ]
 
 [node name="crate_joint_yn" parent="joints" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.525, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.525, 0 )
+visible = false
 joint_id = "crate_joint_yn"
 allowed_connection_ids = [ "crate_joint_yp" ]
 
@@ -70,17 +71,19 @@ joint_id = "crate_joint_zp"
 allowed_connection_ids = [ "crate_joint_zn" ]
 
 [node name="crate_joint_zn" parent="joints" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.525 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -0.525 )
+visible = false
 joint_id = "crate_joint_zn"
 allowed_connection_ids = [ "crate_joint_zp" ]
 
 [node name="crate_joint_xp" parent="joints" instance=ExtResource( 7 )]
-transform = Transform( 0.00649253, 0, 0.999979, 0, 1, 0, -0.999979, 0, 0.00649253, 0.525, 0, 0 )
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.525, 0, 0 )
 joint_id = "crate_joint_xp"
 allowed_connection_ids = [ "crate_joint_xn" ]
 
 [node name="crate_joint_xn" parent="joints" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.525, 0, 0 )
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.525, 0, 0 )
+visible = false
 joint_id = "crate_joint_xn"
 allowed_connection_ids = [ "crate_joint_xp" ]
 

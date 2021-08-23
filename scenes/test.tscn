@@ -30,10 +30,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.30019, 1.01632, -0.216837 )
 [node name="StaticBody" type="StaticBody" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
 collision_layer = 3
-__meta__ = {
-"_edit_group_": true,
-"_edit_lock_": true
-}
 
 [node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.5 )
@@ -46,6 +42,7 @@ material/0 = null
 [node name="joints" type="Spatial" parent="StaticBody"]
 
 [node name="floor" parent="StaticBody/joints" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0 )
 joint_id = "floor"
 allowed_connection_ids = [ "object_floor" ]
 global_placement = true

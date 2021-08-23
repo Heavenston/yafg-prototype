@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://subscenes/joints/yjoint.tscn" type="PackedScene" id=1]
+
+[node name="generic_joint_female" instance=ExtResource( 1 )]
+joint_id = "generic_joint_female"
+allowed_connection_ids = [ "generic_joint_male", "generic_joint_generic" ]

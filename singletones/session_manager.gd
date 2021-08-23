@@ -2,7 +2,7 @@ extends Node
 
 signal inventory_change(slots)
 
-var player_inventory: Array = ["crate", "crate", "crate", "crate", "crate"]
+var player_inventory: Array = ["crate", "crate", "crate", "crate", "crate", "wind_turbine_body"]
 var player_inventory_size: int = 10
 
 func give_item(item_id: String) -> bool:

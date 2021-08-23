@@ -16,3 +16,5 @@ ambient_light_sky_contribution = 0.0
 fog_color = Color( 1, 1, 1, 1 )
 fog_sun_color = Color( 1, 1, 1, 1 )
 fog_depth_enabled = false
+ss_reflections_fade_in = 0.00937501
+ss_reflections_fade_out = 59.7141

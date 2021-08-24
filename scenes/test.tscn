@@ -11,6 +11,7 @@ environment = ExtResource( 2 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 0.794966, 0.238101, -0.557977, 0, 0.91976, 0.392482, 0.606655, -0.312009, 0.731177, 0, 8.4891, 0 )
+shadow_enabled = true
 
 [node name="FirstPersonController" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.30019, 1.01632, -0.216837 )

@@ -1,5 +1,7 @@
 extends Node
 
+const JOINT_CLEARANCE := Vector3.FORWARD * 0.002
+
 var _body_cache := Dictionary()
 
 func _physics_process(_delta):
@@ -56,7 +58,9 @@ func get_object_placement(joint: Spatial, target_joint: Spatial, rotation: float
 		target_up = target_up.rotated(target_view, rotation)
 
 	var new_transform = Transform.IDENTITY.looking_at(target_view, target_up)
-	new_transform *= joint.transform.inverse()
+	var joint_transform_plus_clearance = joint.transform
+	joint_transform_plus_clearance.origin -= joint_transform_plus_clearance.basis.xform(JOINT_CLEARANCE)
+	new_transform *= joint_transform_plus_clearance.inverse()
 	new_transform.origin += final_position
 	
 	return new_transform

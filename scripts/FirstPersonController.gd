@@ -257,6 +257,10 @@ func _physics_process(delta):
 					new_transform = Transform.IDENTITY.looking_at(target_view, target_up)
 					new_transform *= joint_transform.inverse()
 					new_transform.origin += final_position
+
+					for body in placement_ghost.get_overlapping_bodies():
+						if body != collider:
+							placement_ghost.is_valid = false
 				else:
 					placement_ghost.is_valid = false
 					new_transform = Transform.translated(col_point)

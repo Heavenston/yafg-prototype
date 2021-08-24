@@ -19,6 +19,7 @@ export(float) var interaction_reach     = 5.0
 onready var head = $Head
 onready var camera = $Head/Camera
 onready var interact_raycast := $InteractRaycast
+onready var hud := $HUD/HUD/HUD
 
 var velocity: Vector3 = Vector3(0.0, 0.0, 0.0)
 var is_running: bool = false
@@ -39,8 +40,10 @@ var placement_rotation = 0
 
 func _ready():
 	interact_raycast.add_exception(self)
+
+	on_disable()
 	if enable_on_ready:
-		GameplayManager.push(self)
+		on_enable()
 
 func on_enable():
 	camera.current = true
@@ -84,12 +87,9 @@ func _validate_placement():
 	_reset_object_placement()
 	placement_joint1.connect_to(placement_joint2)
 	
-	SessionManager.remove_item($HUD.selected_slot)
+	SessionManager.remove_item(hud.selected_slot)
 
 func _input(event):
-	if GameplayManager.get_current_controller() != self:
-		return
-	
 	if event is InputEventMouseMotion:
 		if is_in_interaction_mode:
 			_update_interaction_mode_raycast()
@@ -103,13 +103,13 @@ func _input(event):
 		is_running = false
 	
 	if event.is_action_pressed("fp_next_hotbar_slot"):
-		$HUD.select_next_slot()
+		hud.select_next_slot()
 	if event.is_action_pressed("fp_previous_hotbar_slot"):
-		$HUD.select_previous_slot()
+		hud.select_previous_slot()
 	
 	for i in range(0, SessionManager.player_inventory_size):
 		if event.is_action_pressed("fp_selector_hotbar_"+String(i)):
-			$HUD.set_selected_slot(i)
+			hud.set_selected_slot(i)
 	
 	if event.is_action_pressed("fp_interaction_mode"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
@@ -177,12 +177,12 @@ func _physics_process(delta):
 		_reset_object_placement()
 		return
 	
-	if $HUD.get_selected_item() != "":
+	if hud.get_selected_item() != "":
 		_reset_interaction_hover()
 		
-		if $HUD.get_selected_item() != placement_item_id:
+		if hud.get_selected_item() != placement_item_id:
 			_reset_object_placement()
-			placement_item_id = $HUD.get_selected_item()
+			placement_item_id = hud.get_selected_item()
 			placement_object = ItemManager.get_item(placement_item_id).place_scene.instance()
 			placement_object_joints = placement_object.get_node("joints").get_children()
 

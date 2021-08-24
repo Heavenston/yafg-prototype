@@ -29,7 +29,4 @@ size = 0.1
 near = 0.1
 far = 400.0
 
-[node name="Position3D" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.275, 0 )
-
 [node name="HUD" parent="." instance=ExtResource( 2 )]

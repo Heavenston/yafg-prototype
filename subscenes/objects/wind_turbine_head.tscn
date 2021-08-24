@@ -35,6 +35,8 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.3
 
 [node name="generic_joint_female" parent="joints" instance=ExtResource( 7 )]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -0.762 )
+allow_placement_rotations = true
+freedom_rotation = true
 
 [node name="wind_turbine_head" parent="." instance=ExtResource( 1 )]
 

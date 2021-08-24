@@ -7,6 +7,8 @@ export(Array, String) var allowed_connection_ids: Array
 export var global_placement: bool = false
 export var allow_placement_rotations: bool = false
 
+export var freedom_rotation: bool = false
+
 func can_connect_to(to) -> bool:
 	return (not is_instance_valid(connected_to) or global_placement) and\
 			(not is_instance_valid(to.connected_to) or to.global_placement) and \
@@ -15,6 +17,7 @@ func can_connect_to(to) -> bool:
 func connect_to(to):
 	if (is_instance_valid(to.connected_to) and not to.global_placement) or\
 		(is_instance_valid(connected_to) and not global_placement):
+		printerr("Invalid connection")
 		return
 
 	connected_to = to

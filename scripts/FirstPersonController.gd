@@ -237,27 +237,8 @@ func _physics_process(delta):
 					placement_joint1 = closest_joint
 					placement_joint2 = closest_own_joint
 
-					var target_view := Vector3.FORWARD
-					var target_up := Vector3.UP
-					var final_position := Vector3.ZERO
-					if closest_joint.global_placement:
-						target_view = col_normal
-						target_up = Vector3(1, 0, 0)
-						final_position = col_point
-					else:
-						target_view = -closest_joint.global_transform.basis.xform(Vector3.FORWARD)
-						target_up = closest_joint.global_transform.basis.xform(Vector3.UP)
-						final_position = closest_joint.global_transform.origin
-
-					if closest_joint.allow_placement_rotations:
-						target_up = target_up.rotated(target_view, placement_rotation)
-
-					var joint_transform = closest_own_joint.transform
-
-					new_transform = Transform.IDENTITY.looking_at(target_view, target_up)
-					new_transform *= joint_transform.inverse()
-					new_transform.origin += final_position
-
+					new_transform = JointUtils.get_object_placement(closest_own_joint, closest_joint, placement_rotation, col_normal, col_point)
+					# Test for overlapping bodies
 					for body in placement_ghost.get_overlapping_bodies():
 						if body != collider:
 							placement_ghost.is_valid = false

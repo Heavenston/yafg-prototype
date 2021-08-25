@@ -10,6 +10,7 @@ height = 1.15
 [node name="FirstPersonController" type="KinematicBody"]
 input_ray_pickable = false
 script = ExtResource( 1 )
+jump_height = 1.1
 
 [node name="InteractRaycast" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0 )

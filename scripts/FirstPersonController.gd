@@ -13,7 +13,6 @@ export(float) var walking_acc: float    = 10.0
 export(float) var air_acc: float        = 1.0
 export(float) var mouse_sensitivity: float = ProjectSettings.get_setting("global/mouse_sensitivity")
 export(float) var jump_height: float    = 1
-onready var jump_speed: float           = sqrt(2 * gravity * jump_height)
 export(float) var interaction_reach     = 5.0
 
 onready var head = $Head
@@ -57,6 +56,9 @@ func on_disable():
 	set_physics_process(false)
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	is_in_interaction_mode = false
+
+func _get_jump_force() -> float:
+	return sqrt(2 * gravity * jump_height)
 
 func get_camera() -> Camera:
 	return camera
@@ -316,7 +318,7 @@ func _process(delta):
 		velocity.z = target_velocity.z
 	
 	if Input.is_action_pressed("fp_jump") and is_on_floor():
-		velocity.y = jump_speed
+		velocity.y = _get_jump_force()
 	
 
 

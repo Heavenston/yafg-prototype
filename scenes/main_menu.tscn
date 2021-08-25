@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://resources/fonts/Roboto/Roboto-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scripts/MainMenu.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://models/wind_turbine_body.glb" type="PackedScene" id=5]
 [ext_resource path="res://models/wind_turbine_head.glb" type="PackedScene" id=6]
 [ext_resource path="res://scenes/menu.tscn" type="PackedScene" id=7]
+[ext_resource path="res://resources/materials/metal/Metal_Pitted_001_SD/metal_spitted.tres" type="Material" id=8]
 
 [sub_resource type="DynamicFont" id=1]
 size = 44
@@ -147,13 +148,18 @@ transform = Transform( -0.979743, 0, 0.200257, 0, 1, 0, -0.200257, 0, -0.979743,
 [node name="wind_turbine_body" parent="Spatial/wind_turbine" instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.501, 0 )
 
+[node name="body" parent="Spatial/wind_turbine/wind_turbine_body" index="0"]
+material/0 = ExtResource( 8 )
+
 [node name="wind_turbine_head" parent="Spatial/wind_turbine" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.301, -0.147 )
 
 [node name="head" parent="Spatial/wind_turbine/wind_turbine_head" index="0"]
 transform = Transform( 0.6, 0, 0, 0, 0.6, 0, 0, 0, 1.52422, 0, 0, 0 )
 mesh = SubResource( 5 )
+material/0 = ExtResource( 8 )
 
 [connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/CenterContainer/PlayButton" to="MainMenu" method="_on_PlayButton_pressed"]
 
+[editable path="Spatial/wind_turbine/wind_turbine_body"]
 [editable path="Spatial/wind_turbine/wind_turbine_head"]

@@ -41,12 +41,14 @@ _collisions_paths = [ NodePath("../../body_collision"), NodePath("../../fin_stic
 [node name="joints" type="Spatial" parent="."]
 
 [node name="generic_joint_male" parent="joints" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.2, 0.018 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.2, -0.597917 )
 
 [node name="generic_joint_female" parent="joints" instance=ExtResource( 7 )]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.29396e-08, 0, -0.499602 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.29396e-08, 0, -1.11552 )
 allow_placement_rotations = true
 freedom_rotation = true
+
+[node name="Position3D" type="Position3D" parent="joints/generic_joint_female"]
 
 [node name="wind_turbine_head" parent="." instance=ExtResource( 1 )]
 
@@ -56,15 +58,15 @@ material/0 = ExtResource( 8 )
 material/1 = ExtResource( 9 )
 
 [node name="body_collision" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.003 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.618725 )
 shape = SubResource( 1 )
 
 [node name="fin_stick_collision" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -5.01277e-08, 1.14379 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -5.01277e-08, 0.528065 )
 shape = SubResource( 2 )
 
 [node name="fin_collision" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -7.76756e-08, 1.77401 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -7.76756e-08, 1.15829 )
 shape = SubResource( 3 )
 
 [editable path="wind_turbine_head"]

@@ -1,14 +1,11 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://resources/fonts/Roboto/Roboto-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scripts/MainMenu.gd" type="Script" id=2]
 [ext_resource path="res://subscenes/grid_floor.tscn" type="PackedScene" id=3]
 [ext_resource path="res://resources/environments/test_environment.tres" type="Environment" id=4]
-[ext_resource path="res://models/wind_turbine_body.glb" type="PackedScene" id=5]
-[ext_resource path="res://models/wind_turbine_head.glb" type="PackedScene" id=6]
+[ext_resource path="res://models/wind_turbine.glb" type="PackedScene" id=5]
 [ext_resource path="res://scenes/menu.tscn" type="PackedScene" id=7]
-[ext_resource path="res://resources/materials/metal/Metal_Pitted_001_SD/metal_spitted.tres" type="Material" id=8]
-[ext_resource path="res://resources/materials/metal/Metal_Corrugated_Galvanized_001_SD/metal_corrugated_galvanized.tres" type="Material" id=9]
 
 [sub_resource type="DynamicFont" id=1]
 size = 44
@@ -124,24 +121,13 @@ current = true
 environment = ExtResource( 4 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="Spatial"]
-transform = Transform( 0.794966, 0.238101, -0.557977, 0, 0.91976, 0.392482, 0.606655, -0.312009, 0.731177, 0, 8.4891, 0 )
+transform = Transform( 0.794966, 0.238101, -0.557977, 0, 0.91976, 0.392481, 0.606655, -0.312009, 0.731177, 0, 8.4891, 0 )
+shadow_enabled = true
 
 [node name="wind_turbine" type="Spatial" parent="Spatial"]
 transform = Transform( -0.979743, 0, 0.200257, 0, 1, 0, -0.200257, 0, -0.979743, 0, 1.5, 0 )
 
-[node name="wind_turbine_body" parent="Spatial/wind_turbine" instance=ExtResource( 5 )]
-
-[node name="body" parent="Spatial/wind_turbine/wind_turbine_body" index="0"]
-material/0 = ExtResource( 8 )
-
-[node name="wind_turbine_head" parent="Spatial/wind_turbine" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, -4.47035e-08, 0, 1, 0, 4.47035e-08, 0, 1, 0, 0, 0 )
-
-[node name="head" parent="Spatial/wind_turbine/wind_turbine_head" index="0"]
-material/0 = ExtResource( 8 )
-material/1 = ExtResource( 9 )
+[node name="wind_turbine" parent="." instance=ExtResource( 5 )]
+transform = Transform( -0.893599, 0, 0.448867, 0, 1, 0, -0.448867, 0, -0.893599, -0.399, 1.5, 1.614 )
 
 [connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/CenterContainer/PlayButton" to="MainMenu" method="_on_PlayButton_pressed"]
-
-[editable path="Spatial/wind_turbine/wind_turbine_body"]
-[editable path="Spatial/wind_turbine/wind_turbine_head"]

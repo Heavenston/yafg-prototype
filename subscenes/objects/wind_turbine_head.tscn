@@ -1,14 +1,12 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://models/wind_turbine_head.glb" type="PackedScene" id=1]
+[ext_resource path="res://models/head.mesh" type="ArrayMesh" id=1]
 [ext_resource path="res://components/mesh_recolor.tscn" type="PackedScene" id=2]
 [ext_resource path="res://components/pickupable.tscn" type="PackedScene" id=3]
 [ext_resource path="res://components/placement_ghost.tscn" type="PackedScene" id=4]
 [ext_resource path="res://components/item.tscn" type="PackedScene" id=5]
 [ext_resource path="res://subscenes/joints/generic_joint_male.tscn" type="PackedScene" id=6]
 [ext_resource path="res://subscenes/joints/generic_joint_female.tscn" type="PackedScene" id=7]
-[ext_resource path="res://resources/materials/metal/Metal_Pitted_001_SD/metal_spitted.tres" type="Material" id=8]
-[ext_resource path="res://resources/materials/metal/Metal_Corrugated_Galvanized_001_SD/metal_corrugated_galvanized.tres" type="Material" id=9]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.251656
@@ -30,12 +28,12 @@ mode = 1
 item_id = "wind_turbine_head"
 
 [node name="mesh_recolor" parent="components" instance=ExtResource( 2 )]
-mesh_instances = [ NodePath("../../wind_turbine_head/head") ]
+mesh_instances = [ NodePath("../../mesh") ]
 
 [node name="pickupable" parent="components" instance=ExtResource( 3 )]
 
 [node name="placement_ghost" parent="components" instance=ExtResource( 4 )]
-_meshes_paths = [ NodePath("../../wind_turbine_head/head") ]
+_meshes_paths = [ NodePath("../../mesh") ]
 _collisions_paths = [ NodePath("../../body_collision"), NodePath("../../fin_stick_collision"), NodePath("../../fin_collision") ]
 
 [node name="joints" type="Spatial" parent="."]
@@ -48,14 +46,10 @@ transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.29396
 allow_placement_rotations = true
 freedom_rotation = true
 
-[node name="Position3D" type="Position3D" parent="joints/generic_joint_female"]
-
-[node name="wind_turbine_head" parent="." instance=ExtResource( 1 )]
-
-[node name="head" parent="wind_turbine_head" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-material/0 = ExtResource( 8 )
-material/1 = ExtResource( 9 )
+[node name="mesh" type="MeshInstance" parent="."]
+mesh = ExtResource( 1 )
+material/0 = null
+material/1 = null
 
 [node name="body_collision" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.618725 )
@@ -68,5 +62,3 @@ shape = SubResource( 2 )
 [node name="fin_collision" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -7.76756e-08, 1.15829 )
 shape = SubResource( 3 )
-
-[editable path="wind_turbine_head"]

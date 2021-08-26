@@ -1,6 +1,9 @@
 extends KinematicBody
 class_name FpsController
 
+const ENABLE_FREE_PLACEMENT: bool = true
+const FREE_PLACEMENT_REACH: float = 2.0
+
 export(bool) var enable_on_ready: bool  = true
 
 export(float) var gravity: float        = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -200,16 +203,22 @@ func _physics_process(delta):
 		# Placement ghost positioning
 		if is_instance_valid(placement_ghost):
 			var new_transform := Transform()
-			new_transform.origin = interact_raycast.global_transform * interact_raycast.cast_to
+			var col_point = interact_raycast.global_transform * interact_raycast.cast_to
+			new_transform.origin = col_point
+			var col_normal = Vector3.UP
+			var collider = null
+
+			var closest_joint = null
+			var closest_own_joint = null
+			var closest_distance = 99999999
+
+			# If the intreact_raycast is colliding, get the joint in the collider
+			# If it's not colliding and free_placement is enabled, it's free placement, so test EVERY joints in the world
 			if interact_raycast.is_colliding():
-				var col_point = interact_raycast.get_collision_point()
-				var col_normal = interact_raycast.get_collision_normal()
-				var collider = interact_raycast.get_collider()
-				
-				# Find closest matching joint with collider
-				var closest_joint = null
-				var closest_own_joint = null
-				var closest_distance = 99999999
+				col_point = interact_raycast.get_collision_point()
+				col_normal = interact_raycast.get_collision_normal()
+				collider = interact_raycast.get_collider()
+
 				if collider.has_node("joints"):
 					for joint in collider.get_node("joints").get_children():
 						# Find a valid joint
@@ -232,23 +241,43 @@ func _physics_process(delta):
 							closest_own_joint = joint2
 							closest_distance = dist
 
-				# If a valid joint is found show placement ghost
-				# And do matrix magic to put the joint in the correct positions
-				if closest_joint != null and is_instance_valid(closest_joint):
-					placement_ghost.is_valid = true
-					placement_joint1 = closest_joint
-					placement_joint2 = closest_own_joint
+			elif ENABLE_FREE_PLACEMENT:
+				# Find closest matching joint with collider
+				for joint in get_tree().get_nodes_in_group("joints"):
+					# Find a valid joint
+					var joint2 = null
+					for joint2_ in placement_object_joints:
+						if not joint.can_connect_to(joint2_):
+							continue
+						joint2 = joint2_
+						break
+					if joint2 == null:
+						continue
+					# No global placement in free placement
+					if joint.global_placement:
+						continue
 
-					new_transform = JointUtils.get_object_placement(closest_own_joint, closest_joint, placement_rotation, col_normal, col_point)
-					# Test for overlapping bodies
-					for body in placement_ghost.get_overlapping_bodies():
-						if body != collider:
-							placement_ghost.is_valid = false
-				else:
-					placement_ghost.is_valid = false
-					new_transform = Transform.translated(col_point)
+					var dist: float = joint.global_transform.origin.distance_squared_to(col_point)
+					if dist < FREE_PLACEMENT_REACH and dist < closest_distance:
+						closest_joint = joint
+						closest_own_joint = joint2
+						closest_distance = dist
+
+			# If a valid joint is found show placement ghost
+			# And do matrix magic to put the joint in the correct positions
+			if closest_joint != null and is_instance_valid(closest_joint):
+				placement_ghost.is_valid = true
+				placement_joint1 = closest_joint
+				placement_joint2 = closest_own_joint
+
+				new_transform = JointUtils.get_object_placement(closest_own_joint, closest_joint, placement_rotation, col_normal, col_point)
+				# Test for overlapping bodies
+				for body in placement_ghost.get_overlapping_bodies():
+					if body != collider:
+						placement_ghost.is_valid = false
 			else:
 				placement_ghost.is_valid = false
+				new_transform = Transform.translated(col_point)
 
 			placement_ghost.global_transform = new_transform
 		

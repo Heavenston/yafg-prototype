@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://resources/fonts/Roboto/Roboto-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scripts/MainMenu.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://models/wind_turbine_head.glb" type="PackedScene" id=6]
 [ext_resource path="res://scenes/menu.tscn" type="PackedScene" id=7]
 [ext_resource path="res://resources/materials/metal/Metal_Pitted_001_SD/metal_spitted.tres" type="Material" id=8]
+[ext_resource path="res://resources/materials/metal/Metal_Corrugated_Galvanized_001_SD/metal_corrugated_galvanized.tres" type="Material" id=9]
 
 [sub_resource type="DynamicFont" id=1]
 size = 44
@@ -24,23 +25,6 @@ font_data = ExtResource( 1 )
 size = 30
 use_filter = true
 font_data = ExtResource( 1 )
-
-[sub_resource type="SpatialMaterial" id=4]
-vertex_color_use_as_albedo = true
-
-[sub_resource type="ArrayMesh" id=5]
-surfaces/0 = {
-"aabb": AABB( -0.5, -0.5, -0.5, 1, 1, 1.00001 ),
-"array_data": PoolByteArray( 0, 0, 0, 191, 0, 0, 0, 191, 0, 0, 0, 63, 129, 0, 0, 0, 0, 127, 0, 127, 0, 54, 0, 60, 0, 0, 0, 191, 0, 0, 0, 191, 0, 0, 0, 63, 0, 129, 0, 0, 127, 0, 0, 127, 0, 48, 0, 52, 0, 0, 0, 191, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 127, 0, 0, 127, 0, 127, 0, 54, 0, 0, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 0, 63, 129, 0, 0, 0, 0, 127, 0, 127, 0, 57, 0, 60, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 127, 0, 0, 127, 0, 127, 0, 57, 0, 0, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 0, 63, 0, 127, 0, 0, 129, 0, 0, 127, 0, 59, 0, 52, 0, 0, 0, 191, 0, 0, 0, 191, 0, 0, 0, 191, 129, 0, 0, 0, 0, 127, 0, 127, 0, 54, 0, 58, 0, 0, 0, 191, 0, 0, 0, 191, 0, 0, 0, 191, 0, 129, 0, 0, 127, 0, 0, 127, 0, 48, 0, 56, 0, 0, 0, 191, 0, 0, 0, 191, 0, 0, 0, 191, 0, 0, 129, 0, 0, 127, 0, 127, 0, 54, 0, 58, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 0, 191, 129, 0, 0, 0, 0, 127, 0, 127, 0, 57, 0, 58, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 0, 191, 0, 0, 129, 0, 0, 127, 0, 127, 0, 57, 0, 58, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 0, 191, 0, 127, 0, 0, 129, 0, 0, 127, 0, 59, 0, 56, 0, 0, 0, 63, 0, 0, 0, 191, 0, 0, 0, 63, 0, 129, 0, 0, 127, 0, 0, 127, 0, 54, 0, 52, 0, 0, 0, 63, 0, 0, 0, 191, 0, 0, 0, 63, 0, 0, 127, 0, 0, 127, 0, 127, 0, 54, 0, 52, 0, 0, 0, 63, 0, 0, 0, 191, 0, 0, 0, 63, 127, 0, 0, 0, 0, 127, 0, 127, 0, 54, 0, 52, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 127, 0, 0, 127, 0, 127, 0, 57, 0, 52, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 0, 63, 0, 127, 0, 0, 129, 0, 0, 127, 0, 57, 0, 52, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 0, 63, 127, 0, 0, 0, 0, 127, 0, 127, 0, 57, 0, 52, 0, 0, 0, 63, 0, 0, 0, 191, 0, 0, 0, 191, 0, 129, 0, 0, 127, 0, 0, 127, 0, 54, 0, 56, 0, 0, 0, 63, 0, 0, 0, 191, 0, 0, 0, 191, 0, 0, 129, 0, 0, 127, 0, 127, 0, 54, 0, 56, 0, 0, 0, 63, 0, 0, 0, 191, 0, 0, 0, 191, 127, 0, 0, 0, 0, 127, 0, 127, 0, 54, 0, 56, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 0, 191, 0, 0, 129, 0, 0, 127, 0, 127, 0, 57, 0, 56, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 0, 191, 0, 127, 0, 0, 129, 0, 0, 127, 0, 57, 0, 56, 0, 0, 0, 63, 0, 0, 0, 63, 0, 0, 0, 191, 127, 0, 0, 0, 0, 127, 0, 127, 0, 57, 0, 56 ),
-"array_index_data": PoolByteArray( 0, 0, 9, 0, 3, 0, 0, 0, 6, 0, 9, 0, 8, 0, 21, 0, 10, 0, 8, 0, 19, 0, 21, 0, 20, 0, 17, 0, 23, 0, 20, 0, 14, 0, 17, 0, 13, 0, 4, 0, 15, 0, 13, 0, 2, 0, 4, 0, 7, 0, 12, 0, 18, 0, 7, 0, 1, 0, 12, 0, 22, 0, 5, 0, 11, 0, 22, 0, 16, 0, 5, 0 ),
-"blend_shape_data": [  ],
-"format": 97559,
-"index_count": 36,
-"material": SubResource( 4 ),
-"primitive": 4,
-"skeleton_aabb": [  ],
-"vertex_count": 24
-}
 
 [node name="Node" type="Node"]
 
@@ -143,21 +127,19 @@ environment = ExtResource( 4 )
 transform = Transform( 0.794966, 0.238101, -0.557977, 0, 0.91976, 0.392482, 0.606655, -0.312009, 0.731177, 0, 8.4891, 0 )
 
 [node name="wind_turbine" type="Spatial" parent="Spatial"]
-transform = Transform( -0.979743, 0, 0.200257, 0, 1, 0, -0.200257, 0, -0.979743, 0, 0, 0 )
+transform = Transform( -0.979743, 0, 0.200257, 0, 1, 0, -0.200257, 0, -0.979743, 0, 1.5, 0 )
 
 [node name="wind_turbine_body" parent="Spatial/wind_turbine" instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.501, 0 )
 
 [node name="body" parent="Spatial/wind_turbine/wind_turbine_body" index="0"]
 material/0 = ExtResource( 8 )
 
 [node name="wind_turbine_head" parent="Spatial/wind_turbine" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.301, -0.147 )
+transform = Transform( 1, 0, -4.47035e-08, 0, 1, 0, 4.47035e-08, 0, 1, 0, 0, 0 )
 
 [node name="head" parent="Spatial/wind_turbine/wind_turbine_head" index="0"]
-transform = Transform( 0.6, 0, 0, 0, 0.6, 0, 0, 0, 1.52422, 0, 0, 0 )
-mesh = SubResource( 5 )
 material/0 = ExtResource( 8 )
+material/1 = ExtResource( 9 )
 
 [connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/CenterContainer/PlayButton" to="MainMenu" method="_on_PlayButton_pressed"]
 

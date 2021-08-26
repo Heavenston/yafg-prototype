@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://resources/models/wind_turbine/head.mesh" type="ArrayMesh" id=1]
 [ext_resource path="res://components/mesh_recolor.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://components/item.tscn" type="PackedScene" id=5]
 [ext_resource path="res://subscenes/joints/generic_joint_male.tscn" type="PackedScene" id=6]
 [ext_resource path="res://subscenes/joints/generic_joint_female.tscn" type="PackedScene" id=7]
+[ext_resource path="res://subscenes/joint_body.tscn" type="PackedScene" id=8]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.251656
@@ -19,46 +20,45 @@ height = 1.29478
 [sub_resource type="BoxShape" id=3]
 extents = Vector3( 0.0187718, 0.453454, 0.281861 )
 
-[node name="wind_turbine_body" type="RigidBody"]
-mode = 1
+[node name="wind_turbine_head" instance=ExtResource( 8 )]
 
-[node name="components" type="Spatial" parent="."]
+[node name="components" type="Spatial" parent="." index="0"]
 
-[node name="item" parent="components" instance=ExtResource( 5 )]
+[node name="item" parent="components" index="0" instance=ExtResource( 5 )]
 item_id = "wind_turbine_head"
 
-[node name="mesh_recolor" parent="components" instance=ExtResource( 2 )]
+[node name="mesh_recolor" parent="components" index="1" instance=ExtResource( 2 )]
 mesh_instances = [ NodePath("../../mesh") ]
 
-[node name="pickupable" parent="components" instance=ExtResource( 3 )]
+[node name="pickupable" parent="components" index="2" instance=ExtResource( 3 )]
 
-[node name="placement_ghost" parent="components" instance=ExtResource( 4 )]
+[node name="placement_ghost" parent="components" index="3" instance=ExtResource( 4 )]
 _meshes_paths = [ NodePath("../../mesh") ]
 _collisions_paths = [ NodePath("../../body_collision"), NodePath("../../fin_stick_collision"), NodePath("../../fin_collision") ]
 
-[node name="joints" type="Spatial" parent="."]
+[node name="joints" type="Spatial" parent="." index="1"]
 
-[node name="generic_joint_male" parent="joints" instance=ExtResource( 6 )]
+[node name="generic_joint_male" parent="joints" index="0" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.2, -0.597917 )
 
-[node name="generic_joint_female" parent="joints" instance=ExtResource( 7 )]
+[node name="generic_joint_female" parent="joints" index="1" instance=ExtResource( 7 )]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.29396e-08, 0, -1.11552 )
 allow_placement_rotations = true
 freedom_rotation = true
 
-[node name="mesh" type="MeshInstance" parent="."]
+[node name="mesh" type="MeshInstance" parent="." index="2"]
 mesh = ExtResource( 1 )
 material/0 = null
 material/1 = null
 
-[node name="body_collision" type="CollisionShape" parent="."]
+[node name="body_collision" type="CollisionShape" parent="." index="3"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.618725 )
 shape = SubResource( 1 )
 
-[node name="fin_stick_collision" type="CollisionShape" parent="."]
+[node name="fin_stick_collision" type="CollisionShape" parent="." index="4"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -5.01277e-08, 0.528065 )
 shape = SubResource( 2 )
 
-[node name="fin_collision" type="CollisionShape" parent="."]
+[node name="fin_collision" type="CollisionShape" parent="." index="5"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -7.76756e-08, 1.15829 )
 shape = SubResource( 3 )

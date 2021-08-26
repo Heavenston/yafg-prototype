@@ -7,6 +7,9 @@ var _body_cache := Dictionary()
 func _physics_process(_delta):
 	_body_cache = {}
 
+func is_body_ground(body) -> bool:
+	return body.is_in_group("floors")
+
 func can_remove_body(body) -> bool:
 	if not body.has_node("joints"):
 		return false
@@ -29,7 +32,7 @@ func is_body_grounded(body, ignore_list: Array = [], body_cache: Dictionary = _b
 	if body.has_node("joints"):
 		for joint in body.get_node("joints").get_children():
 			if is_instance_valid(joint.connected_to):
-				if joint.connected_to.get_node("../..").is_in_group("floors"):
+				if is_body_ground(joint.connected_to.get_node("../..")):
 					grounded = true
 					break
 				if not ignore_list.has(joint.connected_to.get_node("../..")):

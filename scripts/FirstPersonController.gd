@@ -86,11 +86,13 @@ func _update_interaction_mode_raycast(mouse_pos: Vector2 = get_viewport().get_mo
 	interact_raycast.cast_to = cast_to
 
 func _validate_placement():
+	var rot = placement_rotation
 	get_tree().current_scene.add_child(placement_object)
 	placement_object.global_transform = placement_ghost.global_transform
 	placement_object = null
 	_reset_object_placement()
 	placement_joint1.connect_to(placement_joint2)
+	placement_joint1.joint_rotation = rot
 	
 	SessionManager.remove_item(hud.selected_slot)
 

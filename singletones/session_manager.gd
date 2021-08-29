@@ -2,7 +2,7 @@ extends Node
 
 signal inventory_change(slots)
 
-var player_inventory: Array = ["wind_turbine_blade", "wind_turbine_blade", "wind_turbine_blade", "wind_turbine_blade", "wind_turbine_body", "wind_turbine_head", "wind_turbine_rotor_head"]
+var player_inventory: Array = ["wind_turbine_blade", "wind_turbine_blade", "wind_turbine_blade", "wind_turbine_body", "wind_turbine_head", "wind_turbine_rotor_head"]
 var player_inventory_size: int = 10
 
 func has_space_for(amount: int) -> bool:

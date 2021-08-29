@@ -280,6 +280,7 @@ func _physics_process(delta):
 				# Test for overlapping bodies
 				for body in placement_ghost.get_overlapping_bodies():
 					if body != collider:
+						print("colliding with ", body.name)
 						placement_ghost.is_valid = false
 			else:
 				placement_ghost.is_valid = false

@@ -42,9 +42,9 @@ func _physics_process(delta):
 	if is_instance_valid(parented_joint):
 		var parent_joint = parented_joint.joint_parent
 		if parent_joint.freedom_rotation and abs(angular_velocity) > 0:
-			angular_velocity = lerp(angular_velocity, 0, parented_joint.angular_damp * delta)
+			
 			parent_joint.joint_rotation += angular_velocity * delta
-			print(angular_velocity)
+			angular_velocity = lerp(angular_velocity, 0, parented_joint.angular_damp * delta)
 		else:
 			angular_velocity = 0
 
@@ -60,16 +60,19 @@ func add_force(position: Vector3, force: Vector3):
 	var parent_joint = parented_joint.joint_parent
 	var p = parent_joint.get_node("../..")
 
+	var global_force = global_transform.basis.xform(force)
+
 	if parent_joint.freedom_rotation:
-		var plane_position = parent_joint.global_transform.xform_inv(global_transform.xform(position))
-		plane_position.z = 0
-		var rforce = parent_joint.global_transform.basis.xform_inv(force)
+		var r = parent_joint.global_transform.xform_inv(global_transform.xform(position))
+		r.z = 0
+		r = parent_joint.global_transform.basis.xform(r)
 
-		var circle_vector = plane_position.normalized()
-		var factor = cos(acos(circle_vector.dot(rforce.normalized())) - PI/2)
+		var axis = parent_joint.global_transform.basis.xform(-Vector3.FORWARD).normalized()
+		var orthogonal_force = global_force - (global_force.dot(axis) * axis)
 
-		angular_velocity += factor * force.length()
+		var torque = r.cross(orthogonal_force)
+		angular_velocity += torque.length()
 
 	if "is_joint_body" in p:
-		p.add_force(p.global_transform.xform_inv(global_transform.xform(position)), force)
+		p.add_force(p.global_transform.xform_inv(global_transform.xform(position)), p.global_transform.basis.xform_inv(global_force))
 

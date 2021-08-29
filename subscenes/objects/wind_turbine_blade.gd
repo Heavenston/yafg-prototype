@@ -4,4 +4,6 @@ export var apply_force := true
 
 func _physics_process(_delta):
 	if apply_force:
-		add_force(Vector3.ZERO, Vector3.UP * 10)
+		var pos = $wind.transform.origin
+		var force = $wind/force.transform.origin
+		add_force(pos, force)

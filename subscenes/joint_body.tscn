@@ -2,7 +2,5 @@
 
 [ext_resource path="res://scripts/joint_body.gd" type="Script" id=1]
 
-[node name="joint_body" type="RigidBody"]
-mode = 3
-can_sleep = false
+[node name="joint_body" type="KinematicBody"]
 script = ExtResource( 1 )

@@ -6,6 +6,7 @@ enum JointConnectionWay {
 }
 
 var joint_child setget , get_joint_child
+var joint_parent setget , get_joint_parent
 var connected_to = null
 var connection_way: int = -1
 
@@ -15,6 +16,8 @@ export var global_placement: bool = false
 export var allow_placement_rotations: bool = false
 
 export var freedom_rotation: bool = false
+var _angular_damp: float = 100
+export var angular_damp: float setget set_angular_damp, get_angular_damp
 var _joint_rotation: float = 0
 export var joint_rotation: float setget set_joint_rotation, get_joint_rotation
 
@@ -22,6 +25,19 @@ func get_joint_child():
 	if connection_way == JointConnectionWay.Parent:
 		return connected_to
 	return null
+
+func get_joint_parent():
+	if connection_way == JointConnectionWay.Child:
+		return connected_to
+	return null
+
+func set_angular_damp(value: float):
+	if is_instance_valid(connected_to):
+		connected_to._angular_damp = value
+	_angular_damp = value
+
+func get_angular_damp() -> float:
+	return _angular_damp
 
 func set_joint_rotation(value: float):
 	if is_instance_valid(connected_to):

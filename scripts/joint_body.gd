@@ -71,8 +71,7 @@ func add_force(position: Vector3, force: Vector3):
 		var orthogonal_force = global_force - (global_force.dot(axis) * axis)
 
 		var torque = r.cross(orthogonal_force)
-		var relative_torque = parented_joint.global_transform.basis.xform_inv(torque)
-		angular_velocity -= relative_torque.z
+		angular_velocity -= torque.length() * parented_joint.global_transform.basis.z.dot(torque)
 
 	if "is_joint_body" in p:
 		p.add_force(p.global_transform.xform_inv(global_transform.xform(position)), p.global_transform.basis.xform_inv(global_force))

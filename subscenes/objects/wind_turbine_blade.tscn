@@ -27,7 +27,7 @@ mesh_instances = [ NodePath("../../mesh") ]
 
 [node name="placement_ghost" parent="components" index="3" instance=ExtResource( 4 )]
 _meshes_paths = [ NodePath("../../mesh") ]
-_collisions_paths = [ NodePath("../../CollisionShape") ]
+_collisions_paths = [ NodePath("../../collision") ]
 
 [node name="joints" type="Spatial" parent="." index="1"]
 
@@ -38,7 +38,7 @@ transform = Transform( 0.866025, 0.5, -2.18557e-08, 0, -4.37114e-08, -1, -0.5, 0
 mesh = ExtResource( 1 )
 material/0 = null
 
-[node name="CollisionShape" type="CollisionShape" parent="." index="3"]
+[node name="collision" type="CollisionShape" parent="." index="3"]
 shape = SubResource( 1 )
 
 [node name="wind" type="Position3D" parent="." index="4"]

@@ -68,4 +68,17 @@ func get_object_placement(joint: Spatial, target_joint: Spatial, rotation: float
 	
 	return new_transform
 
+func get_all_connected_bodies(body: Spatial) -> Array:
+	if not body.has_node("joints"):
+		return []
+
+	var bodies = []
+	for joint in body.get_node("joints").get_children():
+		if is_instance_valid(joint.joint_child):
+			var child = joint.joint_child.get_node("../..")
+			bodies.append(child)
+			bodies.append_array(get_all_connected_bodies(child))
+
+	return bodies
+
 

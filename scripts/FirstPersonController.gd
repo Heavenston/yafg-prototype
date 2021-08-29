@@ -29,8 +29,9 @@ var last_mouse_pos = null
 
 var is_in_interaction_mode = false
 var interact_hover = null
-var interact_hover_recolors: Array = []
-var interact_hover_can_pickup: bool = false
+var interact_hover_bodies := []
+var interact_hover_recolors := []
+var interact_hover_can_pickup := false
 
 var placement_item_id: String = ""
 var placement_object: Spatial = null
@@ -152,9 +153,12 @@ func _input(event):
 		if is_instance_valid(interact_hover) \
 		and interact_hover_can_pickup \
 		and interact_hover.has_node("components/pickupable"):
-			var result = SessionManager.give_item(interact_hover.get_node("components/item").item_id)
-			if result:
+			if SessionManager.has_space_for(interact_hover_bodies.size() + 1):
+				var _result = SessionManager.give_item(interact_hover.get_node("components/item").item_id)
 				interact_hover.queue_free()
+				for body in interact_hover_bodies:
+					_result = SessionManager.give_item(body.get_node("components/item").item_id)
+					body.queue_free()
 
 func _reset_interaction_hover():
 	
@@ -299,30 +303,27 @@ func _physics_process(delta):
 	_reset_interaction_hover()
 	
 	if collider.has_node("components/pickupable"):
-		var invalid_joints := []
+		var attached_bodies: Array = JointUtils.get_all_connected_bodies(collider)
 		var can_pickup := true
-		if collider.has_node("joints"):
-			var body_cache = {}
-			var ignore_list = [collider]
-			for joint in collider.get_node("joints").get_children():
-				if joint.joint_id != "object_floor" and is_instance_valid(joint.connected_to):
-					var p = joint.connected_to.get_node("../..")
-					if not JointUtils.is_body_grounded(p, ignore_list, body_cache):
-						invalid_joints.append(p)
-						can_pickup = false
+		for body in attached_bodies:
+			if not body.has_node("components/pickupable"):
+				can_pickup = false
+		if not can_pickup:
+			can_pickup = SessionManager.has_space_for(attached_bodies.size() + 1)
 
 		interact_hover_can_pickup = can_pickup
+		interact_hover_bodies = attached_bodies
 
+		var coloring := Color.white if can_pickup else Color.red
 		if collider.has_node("components/mesh_recolor"):
 			var recolor = collider.get_node("components/mesh_recolor")
 			interact_hover_recolors.append(recolor)
-			recolor.set_color(Color.white)
-		if not can_pickup:
-			for body in invalid_joints:
-				if body.has_node("components/mesh_recolor"):
-					var recolor = body.get_node("components/mesh_recolor")
-					interact_hover_recolors.append(recolor)
-					recolor.set_color(Color.red)
+			recolor.set_color(coloring)
+		for body in attached_bodies:
+			if body.has_node("components/mesh_recolor"):
+				var recolor = body.get_node("components/mesh_recolor")
+				interact_hover_recolors.append(recolor)
+				recolor.set_color(coloring)
 	else:
 		interact_hover_can_pickup = false
 

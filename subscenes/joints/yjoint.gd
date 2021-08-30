@@ -37,6 +37,8 @@ func set_angular_damp(value: float):
 	_angular_damp = value
 
 func get_angular_damp() -> float:
+	if is_instance_valid(connected_to) and connection_way == JointConnectionWay.Child:
+		return connected_to._angular_damp
 	return _angular_damp
 
 func set_joint_rotation(value: float):
@@ -45,6 +47,8 @@ func set_joint_rotation(value: float):
 	_joint_rotation = value
 
 func get_joint_rotation() -> float:
+	if is_instance_valid(connected_to) and connection_way == JointConnectionWay.Child:
+		return connected_to._joint_rotation
 	return _joint_rotation
 
 func can_connect_to(to) -> bool:

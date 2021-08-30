@@ -18,3 +18,9 @@ func _on_FullScreenButton_pressed():
 
 func _on_QuitButton_pressed():
 	get_tree().quit()
+
+func _on_wind_speed_slider_value_changed(value: float):
+	SessionManager.wind_speed = value
+
+func _on_wind_direction_slider_value_changed(value: float):
+	SessionManager.wind_direction = Vector3(sin(deg2rad(value)), 0, cos(deg2rad(value)))

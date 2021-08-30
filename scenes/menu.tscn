@@ -34,7 +34,7 @@ __meta__ = {
 [node name="title" type="Label" parent="VBoxContainer"]
 margin_right = 292.0
 margin_bottom = 52.0
-rect_rotation = -4.74579
+rect_rotation = 3.57812
 rect_pivot_offset = Vector2( 146, 26 )
 custom_fonts/font = SubResource( 1 )
 text = "YAFG"
@@ -61,10 +61,63 @@ margin_right = 292.0
 margin_bottom = 182.0
 text = "Fullscreen Toggle"
 
-[node name="SEPARATOR2" type="Control" parent="VBoxContainer"]
+[node name="WindSpeedSlider" type="VBoxContainer" parent="VBoxContainer"]
 margin_top = 202.0
 margin_right = 292.0
-margin_bottom = 202.0
+margin_bottom = 247.0
+
+[node name="label" type="RichTextLabel" parent="VBoxContainer/WindSpeedSlider"]
+margin_right = 292.0
+margin_bottom = 25.503
+rect_min_size = Vector2( 109.14, 25.503 )
+size_flags_vertical = 3
+text = "Wind Speed"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="slider" type="HSlider" parent="VBoxContainer/WindSpeedSlider"]
+margin_top = 29.0
+margin_right = 292.0
+margin_bottom = 45.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+value = 30.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WindDirectionSlider" type="VBoxContainer" parent="VBoxContainer"]
+margin_top = 267.0
+margin_right = 292.0
+margin_bottom = 312.0
+
+[node name="label" type="RichTextLabel" parent="VBoxContainer/WindDirectionSlider"]
+margin_right = 292.0
+margin_bottom = 25.503
+rect_min_size = Vector2( 109.14, 25.503 )
+size_flags_vertical = 3
+text = "Wind Direction"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="slider" type="HSlider" parent="VBoxContainer/WindDirectionSlider"]
+margin_top = 29.0
+margin_right = 292.0
+margin_bottom = 45.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+min_value = -180.0
+max_value = 180.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SEPARATOR2" type="Control" parent="VBoxContainer"]
+margin_top = 332.0
+margin_right = 292.0
+margin_bottom = 332.0
 size_flags_vertical = 2
 __meta__ = {
 "_edit_use_anchors_": false
@@ -81,4 +134,6 @@ __meta__ = {
 
 [connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_PlayButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/FullScreenButton" to="." method="_on_FullScreenButton_pressed"]
+[connection signal="value_changed" from="VBoxContainer/WindSpeedSlider/slider" to="." method="_on_wind_speed_slider_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/WindDirectionSlider/slider" to="." method="_on_wind_direction_slider_value_changed"]
 [connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]

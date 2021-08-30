@@ -21,8 +21,20 @@ height = 1.29478
 extents = Vector3( 0.0187718, 0.453454, 0.281861 )
 
 [node name="wind_turbine_head" instance=ExtResource( 8 )]
+apply_wind_forces = true
 
-[node name="components" type="Spatial" parent="." index="0"]
+[node name="wind_forces" type="Spatial" parent="." index="0"]
+
+[node name="wind" type="Position3D" parent="wind_forces" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.09 )
+
+[node name="force" type="Position3D" parent="wind_forces/wind" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0 )
+
+[node name="origin" type="Position3D" parent="wind_forces/wind" index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0 )
+
+[node name="components" type="Spatial" parent="." index="1"]
 
 [node name="item" parent="components" index="0" instance=ExtResource( 5 )]
 item_id = "wind_turbine_head"
@@ -36,7 +48,7 @@ mesh_instances = [ NodePath("../../mesh") ]
 _meshes_paths = [ NodePath("../../mesh") ]
 _collisions_paths = [ NodePath("../../body_collision"), NodePath("../../fin_stick_collision"), NodePath("../../fin_collision") ]
 
-[node name="joints" type="Spatial" parent="." index="1"]
+[node name="joints" type="Spatial" parent="." index="2"]
 
 [node name="generic_joint_male" parent="joints" index="0" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.2, -0.597917 )
@@ -46,19 +58,19 @@ transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.29396
 allow_placement_rotations = true
 freedom_rotation = true
 
-[node name="mesh" type="MeshInstance" parent="." index="2"]
+[node name="mesh" type="MeshInstance" parent="." index="3"]
 mesh = ExtResource( 1 )
 material/0 = null
 material/1 = null
 
-[node name="body_collision" type="CollisionShape" parent="." index="3"]
+[node name="body_collision" type="CollisionShape" parent="." index="4"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.618725 )
 shape = SubResource( 1 )
 
-[node name="fin_stick_collision" type="CollisionShape" parent="." index="4"]
+[node name="fin_stick_collision" type="CollisionShape" parent="." index="5"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -5.01277e-08, 0.528065 )
 shape = SubResource( 2 )
 
-[node name="fin_collision" type="CollisionShape" parent="." index="5"]
+[node name="fin_collision" type="CollisionShape" parent="." index="6"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -7.76756e-08, 1.15829 )
 shape = SubResource( 3 )
